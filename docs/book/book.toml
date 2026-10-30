@@ -1,0 +1,14 @@
+[book]
+title = "The Raspberry Pi 3 BSP"
+description = "How the OsCraft board support package for the Raspberry Pi 3, compatible with QNX OS 8.0, boots the board with a startup written in Rust."
+authors = ["The OsCraft authors"]
+language = "en"
+src = "src"
+
+[build]
+build-dir = "../../build/book/bsp"
+
+[output.html]
+git-repository-url = "https://github.com/capitan-davide/oscraft-bsp-raspberrypi-bcm2837-rpi3"
+default-theme = "light"
+preferred-dark-theme = "navy"

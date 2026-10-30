@@ -1,0 +1,10 @@
+# Reference BSP sources (QNX's C startup), kept locally only
+/tmp/
+
+# Build outputs
+/target/
+/build/
+/docs/book/build/
+
+# Local tool configuration (MCP servers with machine-specific paths)
+/.mcp.json

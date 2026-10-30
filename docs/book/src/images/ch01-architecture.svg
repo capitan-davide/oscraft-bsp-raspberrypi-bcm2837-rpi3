@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="820" height="420" viewBox="0 0 820 420" font-family="DejaVu Sans, Helvetica, Arial, sans-serif" font-size="12">
+  <defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#333333"/></marker></defs>
+  <style>
+    .k { fill: #dce9f8; stroke: #2c5d9b; stroke-width: 1.2; }
+    .u { fill: #f6e7d2; stroke: #9a6b2f; stroke-width: 1.2; }
+    .n { fill: #eeeeee; stroke: #666666; stroke-width: 1.2; }
+    .y { fill: #fbf3c8; stroke: #9a8420; stroke-width: 1.2; }
+    .frame { fill: none; stroke: #999999; stroke-width: 1; stroke-dasharray: 5 4; }
+    .ln { fill: none; stroke: #333333; stroke-width: 1.2; }
+    .t { text-anchor: middle; }
+    .b { font-weight: bold; }
+    .s { font-size: 11px; fill: #444444; }
+    .m { font-family: DejaVu Sans Mono, monospace; font-size: 11px; }
+  </style>
+  <rect width="820" height="420" fill="#ffffff"/>
+  <!-- this repository -->
+  <rect class="frame" x="16" y="16" width="470" height="388" rx="8"/>
+  <text class="b" x="30" y="38">The BSP</text>
+  <rect class="k" x="36" y="54" width="210" height="96" rx="6"/>
+  <text class="t b" x="141" y="76">oscraft-startup</text>
+  <text class="t s" x="141" y="94">the startup library: system page,</text>
+  <text class="t s" x="141" y="108">callouts, MMU, SMP, loading</text>
+  <text class="t s" x="141" y="122">(no board code)</text>
+  <text class="t m" x="141" y="140">own repository, + book</text>
+  <rect class="k" x="266" y="54" width="200" height="96" rx="6"/>
+  <text class="t b" x="366" y="76">startup-bcm2837-rpi3</text>
+  <text class="t s" x="366" y="94">the board crate: interrupts, RAM,</text>
+  <text class="t s" x="366" y="108">mailbox, mini-UART, reboot,</text>
+  <text class="t s" x="366" y="122">spin table</text>
+  <path class="ln" d="M266,102 L248,102" marker-end="url(#a)"/>
+  <text class="t s" x="257" y="168">uses</text>
+  <rect class="y" x="36" y="186" width="210" height="62" rx="6"/>
+  <text class="t b" x="141" y="208">images/rpi3.build</text>
+  <text class="t s" x="141" y="226">what goes into the boot image</text>
+  <rect class="n" x="266" y="186" width="200" height="62" rx="6"/>
+  <text class="t b" x="366" y="208">tools/qemu</text>
+  <text class="t s" x="366" y="226">fwstub, run.sh, test.py</text>
+  <rect class="n" x="36" y="266" width="210" height="62" rx="6"/>
+  <text class="t b" x="141" y="288">Makefile</text>
+  <text class="t s" x="141" y="306">startup, image, run, test, book</text>
+  <rect class="n" x="266" y="266" width="200" height="62" rx="6"/>
+  <text class="t b" x="366" y="288">docs/book</text>
+  <text class="t s" x="366" y="306">this book</text>
+  <text class="s" x="36" y="356">oscraft-startup is a repository of its own, with its book;</text>
+  <text class="s" x="36" y="370">the board crate depends on it through git. The rest is this</text>
+  <text class="s" x="36" y="384">repository.</text>
+  <!-- from QNX -->
+  <rect class="frame" x="510" y="16" width="294" height="388" rx="8"/>
+  <text class="b" x="524" y="38">From QNX (SDP 8.0, RPi4 BSP)</text>
+  <rect class="u" x="530" y="54" width="254" height="62" rx="6"/>
+  <text class="t b" x="657" y="76">procnto-smp-instr</text>
+  <text class="t s" x="657" y="94">the kernel, unmodified</text>
+  <rect class="u" x="530" y="130" width="254" height="62" rx="6"/>
+  <text class="t b" x="657" y="152">ksh, libc, pipe, toybox, ...</text>
+  <text class="t s" x="657" y="170">from the SDP</text>
+  <rect class="u" x="530" y="206" width="254" height="62" rx="6"/>
+  <text class="t b" x="657" y="228">devc-serminiuart, ...</text>
+  <text class="t s" x="657" y="246">drivers, from the BSP's prebuilt</text>
+  <rect class="u" x="530" y="282" width="254" height="62" rx="6"/>
+  <text class="t b" x="657" y="304">mkifs</text>
+  <text class="t s" x="657" y="322">builds the boot image</text>
+  <text class="s" x="530" y="372">mkifs links the board crate's startup</text>
+  <text class="s" x="530" y="386">into the image: QNX has none for the Pi 3.</text>
+</svg>

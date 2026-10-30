@@ -1,0 +1,63 @@
+# Check and build the books, and publish them on GitHub Pages: the BSP's
+# (docs/book) and, next to it, the startup library's, from the version
+# Cargo.lock pins, which the BSP's book links to. The site's index page
+# leads to both. Code changes trigger it too: the books include code by
+# anchor, and the check fails when an anchor they use was moved or removed.
+name: book
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "docs/**"
+      - "startup-bcm2837-rpi3/**"
+      - "tools/**"
+      - "images/**"
+      - "Cargo.lock"
+      - "Makefile"
+      - ".github/workflows/book.yml"
+  pull_request:
+    paths:
+      - "docs/**"
+      - "startup-bcm2837-rpi3/**"
+      - "tools/**"
+      - "images/**"
+      - "Cargo.lock"
+      - "Makefile"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: taiki-e/install-action@v2
+        with:
+          tool: mdbook@0.5.4
+      # Cargo (from rust-toolchain.toml) fetches the startup library, whose
+      # book is built from its source; the SDP is not needed.
+      - run: make book
+      - uses: actions/upload-pages-artifact@v3
+        if: github.event_name != 'pull_request'
+        with:
+          path: build/book
+
+  deploy:
+    if: github.event_name != 'pull_request'
+    needs: build
+    runs-on: ubuntu-24.04
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

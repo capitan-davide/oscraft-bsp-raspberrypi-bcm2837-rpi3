@@ -1,0 +1,70 @@
+###############################################################################
+# QNX OS 8.0 image for the Raspberry Pi 3 (and QEMU's raspi3b machine).
+#
+# Our Rust startup, startup-bcm2837-rpi3, comes first in mkifs's search path
+# (build/startup); the drivers come from QNX's RPi4 BSP (its prebuilt/), as
+# the BCM2837 has the same mini-UART; the rest is the SDP's. QNX has no
+# startup for the Raspberry Pi 3.
+#
+# ${STARTUP_OPTS} is not expanded by mkifs: the Makefile replaces it (with
+# sed) by the startup options, such as the debug verbosity and -u reg, which
+# takes the DTB address from x0.
+###############################################################################
+
+# ANCHOR: bootstrap
+[image=0x80000]
+[+keeplinked]
+[virtual=aarch64le,raw] .boot = {
+    startup-bcm2837-rpi3 ${STARTUP_OPTS}
+    PATH=/proc/boot:/bin:/usr/bin:/sbin:/usr/sbin LD_LIBRARY_PATH=/proc/boot:/lib:/usr/lib:/lib/dll procnto-smp-instr -v
+}
+# ANCHOR_END: bootstrap
+
+[+script] .script = {
+    display_msg "Welcome to QNX on the Raspberry Pi 3"
+
+    # Console on the mini-UART (UART1, the GPIO 14/15 pins): GPU interrupt
+    # 29, vector 0x40 + 29. Its clock is the core clock, which enable_uart=1
+    # sets to 250 MHz on the Raspberry Pi 3.
+    devc-serminiuart -b115200 -c250000000 -e -F -u1 0x3f215000,93
+    waitfor /dev/ser1
+    reopen /dev/ser1
+
+    # Pipe manager, needed by ksh for $(...) and pipelines.
+    pipe
+    waitfor /dev/pipe
+
+    SYSNAME=nto
+    TERM=qansi
+    ksh -c "echo QNX $(uname -r) on $(uname -m), $(pidin info | grep -c Processor) CPUs"
+    [+session] ksh &
+}
+
+[uid=0 gid=0]
+[-optional]
+
+[type=link] /bin/sh=/bin/ksh
+[type=link] /dev/console=/dev/ser1
+[type=link] /tmp=/dev/shmem
+
+/usr/lib/ldqnx-64.so.2=ldqnx-64.so.2
+/lib/libc.so=libc.so
+/lib/libgcc_s.so=libgcc_s.so.1
+/lib/libsecpol.so=libsecpol.so.1
+/lib/libm.so=libm.so.3
+/lib/libfsnotify.so=libfsnotify.so.1
+/usr/lib/libz.so=libz.so.2
+
+/sbin/devc-serminiuart=devc-serminiuart
+/sbin/pipe=pipe
+/bin/ksh=ksh
+/bin/pidin=pidin
+/sbin/shutdown=shutdown
+
+# Common utilities: links to toybox.
+/usr/bin/toybox=toybox
+[type=link] /bin/uname=/usr/bin/toybox
+[type=link] /bin/grep=/usr/bin/toybox
+[type=link] /bin/ls=/usr/bin/toybox
+[type=link] /bin/cat=/usr/bin/toybox
+[type=link] /bin/echo=/usr/bin/toybox

@@ -1,0 +1,15 @@
+[package]
+name = "startup-bcm2837-rpi3"
+description = "Startup for the Raspberry Pi 3 (BCM2837), compatible with QNX OS 8.0"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+# A static library: the Makefile partially links it (ld -r) into the
+# relocatable object mkifs expects, and mkifs links that at the image's
+# address.
+[lib]
+crate-type = ["staticlib"]
+
+[dependencies]
+oscraft-startup = { git = "https://github.com/capitan-davide/oscraft-startup" }
